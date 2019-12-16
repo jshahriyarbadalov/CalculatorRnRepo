@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {Component} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
-export default class App extends React.Component {
+export default class App extends Component {
   constructor(){
     super();
     this.state={
@@ -17,22 +17,12 @@ export default class App extends React.Component {
       calculationText: eval(text)
     })
   }
-  valids(){
-    const text = this.state.resultText
-    switch(text.slice(-1)){
-      case '+':
-      case '-':
-      case 'x':
-      case '/':
-      return false
-    }
-    return true
-  }
+  
   
 
   btnPressed(text){
     if(text == '='){
-      return this.valids() &&  this.calculateResult()
+      return   this.calculateResult()
     }
     this.setState({
       resultText: this.state.resultText+text
@@ -42,10 +32,9 @@ export default class App extends React.Component {
   calculator(operation){
     switch(operation) {
       case 'AC':
-              let text = this.state.resultText.split('')
-              text.pop()
+              let text = ""
               this.setState({
-                resultText: text.join('')
+                resultText: text
               })
               break
       case '+':
