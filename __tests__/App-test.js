@@ -17,29 +17,12 @@ describe('Test my function btnPressed ', () => {
     expect(myfunction).toMatchSnapshot();
   })
 
-  it('validate function Testing App Component', () => {
-    let resTxt = "5+6";
-    function valid() {
-      const text = resTxt
-      switch (text.slice(-1)) {
-        case '+':
-        case '-':
-        case 'x':
-        case '/':
-          return false
-      }
-      return true;
-    }
-    let rgx = renderer.create(<App />).getInstance()
-    let variable = rgx.validate()
-    let vall=valid()
-    expect(variable).toBe(vall);
-
-  })
   it('calculateResult function  Testing App Component', () => {
     let clc = renderer.create(<App />).getInstance()
-    let variab = clc.calculateResult()
-    expect(variab).not.toBeDefined()
+    let text = "7*8"
+    let variab = clc.calculateResult(text)
+    let result = eval(text)
+    expect(result).not.toBe(variab)
 
   })
   it('constructor function  Testing App Component', () => {
@@ -57,31 +40,6 @@ describe('Test my function btnPressed ', () => {
 
   })
 
-  it('calculator function  Testing App Component', () => {
-    let oper = '+'
-    let result = '+'
-    let resultTxt = "9/0"
-    let text = ''
-    switch (oper) {
-      case 'AC':
-        text
-        break
-      case '+':
-      case '-':
-      case 'x':
-      case '/':
-        const lastChar = resultTxt.split('').pop()
-        if (oper.indexOf(lastChar) > 0) return
-
-        if (resultTxt == "") {
-          return
-        }
-        resultTxt = resultTxt + oper
-    }
-    let ops = renderer.create(<App />).getInstance()
-    let ans = ops.calculator(oper);
-    expect(ans).not.toEqual(result);
-  })
 
   it(' render function testing', () => {
     let rows = [];
@@ -121,3 +79,34 @@ describe('Test my function btnPressed ', () => {
   });
 });
 
+describe('validate function', () => {
+  test.each`
+    input   | expectedResult
+    ${'+'}  | ${false}
+    ${'-'}  | ${false}
+    ${'x'}  | ${false}
+    ${'/'}  | ${false}
+    
+  `('validate $input to $expectedResult', ({ input, expectedResult }) => {
+    let rgx = renderer.create(<App />).getInstance()
+    let variable = rgx.validate(input)
+    expect(variable).toBe(expectedResult)
+  })
+})
+
+describe('calculator function', () => {
+
+  test.each`
+    input   | expectedResult
+    ${"AC"} | ${undefined}
+    ${"+"}  | ${undefined}
+    ${"-"}  | ${undefined}
+    ${"x"}  | ${undefined}
+    ${"/"}  | ${undefined}
+    
+  `('calculator $input to $expectedResult', ({ input, expectedResult }) => {
+    let rgx = renderer.create(<App />).getInstance()
+    let variable = rgx.calculator(input)
+    expect(variable).toBe(expectedResult)
+  })
+})
